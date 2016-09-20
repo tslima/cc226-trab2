@@ -4,7 +4,7 @@ this.dir <- dirname(parent.frame(2)$ofile)
 setwd(this.dir)
 body_fat_data = read.table("bodyfat",skip=117,nrows = 252)
 x <- data.matrix(body_fat_data[,c(1,3,4,5,6,7,8,9,10,11,12,13,14,15)])
-y<-data.matrix(body_fat_data[,c(2)])
+y <-data.matrix(body_fat_data[,c(2)])
 #Criando os folds
 folds <- createFolds(y,k=10)
 betas <-matrix(0,ncol(x),10)
@@ -22,3 +22,8 @@ for(i in 1:10){
 # Calculo dos valores finais
 rms_error <-sqrt(rms_error)
 mean_beta <- (betas %*% matrix(1,ncol(betas),1))/ncol(betas)
+#Plotando o grafico
+y_final <- x%*%mean_beta
+index <-1:252
+plot(index,y,col="blue")
+points(index,y_final,col="red")
