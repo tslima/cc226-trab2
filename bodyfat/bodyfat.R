@@ -1,9 +1,10 @@
+rm(list=ls())
 library(caret)
 #Lendo o arquivo de dados
 this.dir <- dirname(parent.frame(2)$ofile)
 setwd(this.dir)
 body_fat_data = read.table("bodyfat",skip=117,nrows = 252)
-x <- data.matrix(body_fat_data[,c(1,3,4,5,6,7,8,9,10,11,12,13,14,15)])
+x <- data.matrix(body_fat_data[,c(1,3,4,6,7,8,9,10,11,12,13,14)])
 y <-data.matrix(body_fat_data[,c(2)])
 #Criando os folds
 folds <- createFolds(y,k=10)
@@ -16,11 +17,11 @@ for(i in 1:10){
   xtraint <-t(xtrain)
   beta <- solve(xtraint%*%xtrain)%*%xtraint%*%ytrain
   res <- y[folds[[i]],] - x[folds[[i]],]%*%beta
-  rms_error = rms_error + t(res)%*%res
+  rms_error = rms_error + sqrt((t(res)%*%res)/nrow(res))
   betas[,i] <- beta
 }
 # Calculo dos valores finais
-rms_error <-sqrt(rms_error)
+rms_error<-rms_error/10
 mean_beta <- (betas %*% matrix(1,ncol(betas),1))/ncol(betas)
 #Plotando o grafico
 y_final <- x%*%mean_beta

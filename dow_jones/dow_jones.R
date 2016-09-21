@@ -1,0 +1,11 @@
+rm(list=ls())
+#Lendo o arquivo de dados
+this.dir <- dirname(parent.frame(2)$ofile)
+setwd(this.dir)
+dow_jones = read.table("DJ30 1985 2003.txt",dec=",",sep=";")
+open= data.matrix(dow_jones[,3])
+high= data.matrix(dow_jones[,4])
+low= data.matrix(dow_jones[,5])
+volume= data.matrix(dow_jones[,6])
+adjclose= data.matrix(dow_jones[,8])
+plot(open,type ="l", col="blue")
