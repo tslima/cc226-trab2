@@ -4,6 +4,19 @@ library(caret)
 this.dir <- dirname(parent.frame(2)$ofile)
 setwd(this.dir)
 body_fat_data = read.table("bodyfat",skip=117,nrows = 252)
+#pairs(body_fat_data[,c(2,1,3:5)],labels = c("% Bodyfat","Density","Age","Weight","Height"))
+#pairs(body_fat_data[,c(2,6:10)],labels = c("% Bodyfat","Neck","Chest","Abdomen","Hip","Thigh"))
+#testando <-pairs(body_fat_data[,c(2,11:15)],labels = c("% Bodyfat","Knee","Ankle","Biceps","Forearm","Wrist"))
+
+labels <- c("Density","% Bodyfat","Age","Weight","Height","Neck","Chest","Abdomen","Hip","Thigh","Knee","Ankle","Biceps","Forearm","Wrist")
+par(mfcol=c(3,3))
+plot(body_fat_data[,1],body_fat_data[,2],main="Density",ylab="Body Fat",xlab = "Density")
+for (i in 3:15) {
+  plot(body_fat_data[,i],body_fat_data[,2],main=labels[i],ylab="Body Fat",xlab = labels[i])
+}
+par(mfcol=c(1,1))
+
+
 x <- data.matrix(body_fat_data[,c(1)])
 y <-data.matrix(body_fat_data[,c(2)])
 x <- cbind(matrix(1,nrow(x),1),x)
@@ -29,3 +42,6 @@ y_final <- x%*%mean_beta
 index <-1:252
 plot(index,y,col="blue")
 points(index,y_final,col="red",pch="+")
+print(rms_error)
+plot(body_fat_data[,1],body_fat_data[,2],xlab = "Density",ylab = "Body Fat(%)", main="Density x Body Fat")
+lines(body_fat_data[,1],y_final,col='red')
